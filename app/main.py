@@ -1,12 +1,14 @@
 from typing import Callable, Any
+import inspect
 
 
 def cache(func: Callable) -> Callable:
     stored_dict = {}
-
+    sig = inspect.signature(func)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
-        key = args + tuple(kwargs.items())
-
+        bound = sig.bind(*args, **kwargs)
+        bound.apply_defaults()
+        key = tuple(bound.arguments.items())
         if key in stored_dict:
             print("Getting from cache")
             return stored_dict[key]
