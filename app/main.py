@@ -5,6 +5,7 @@ import inspect
 def cache(func: Callable) -> Callable:
     stored_dict = {}
     sig = inspect.signature(func)
+
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         bound = sig.bind(*args, **kwargs)
         bound.apply_defaults()
